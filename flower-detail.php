@@ -6,7 +6,6 @@ require_once('FlowerManager.php');
 var_dump($_GET['id']);
 $flower = FlowerManager::find($_GET['id']);
 
-
 ?>
 
 <!DOCTYPE html>
