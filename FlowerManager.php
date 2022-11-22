@@ -1,5 +1,5 @@
 <?php
-
+require_once('flower.php');
 class FlowerManager
 {
 
@@ -35,10 +35,50 @@ class FlowerManager
         // execute
         $prep->execute();
         // fetch
-        $flower = $prep->fetch(PDO::FETCH_ASSOC);
+        $prep->setFetchMode(PDO::FETCH_CLASS, 'Flower');
+        $flower = $prep->fetch();
 
         return $flower;
         // close conn
         $pdo = null;
+    }
+
+    public static function findByName($name)
+    {
+        //open db conn
+        $pdo = self::get_pdo();
+        $query = "SELECT * FROM flowers WHERE name = :name";
+        // prepare
+        $prep = $pdo->prepare($query);
+        // bind
+        $prep->bindValue(':name', "%$name%");
+        // execute
+        $prep->execute();
+        // fetch
+        $prep->setFetchMode(PDO::FETCH_CLASS, 'Flower');
+        $flower = $prep->fetch();
+
+        return $flower;
+        $pdo = null;
+    }
+
+    public static function sortBy($column, $direction)
+    {
+        //open db conn
+        $pdo = self::get_pdo();
+        $query = "SELECT * FROM flowers ORDER BY $column $direction";
+        // prepare
+        $prep = $pdo->prepare($query);
+        // bind
+        // $prep->bindValue(':column', $column);
+        // $prep->bindValue(':direction', $direction);
+        // execute
+        $result = $pdo->query($query);
+        // fetch
+        $flowers = $result->fetchAll(PDO::FETCH_CLASS, 'Flower');
+
+        // close conn
+        $pdo = null;
+        return $flowers;
     }
 }
