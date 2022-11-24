@@ -1,6 +1,6 @@
 <?php
 
-require_once('FlowerManager.php');
+require_once('FlowerAPIManager.php');
 
 ?>
 
@@ -17,10 +17,13 @@ require_once('FlowerManager.php');
 <body>
     <div>
         <?php
-        $flowers = FlowerManager::findAll();
+        if (isset($_GET['name'])) $flower = FlowerManager::findByName($_GET['name']);
+        else 
+        if (isset($_GET['column']) && isset($_GET['direction']))
+            $flower = FlowerManager::sortBy($_GET['column'], $_GET['direction']);
+        else $flower = FlowerManager::findAll();
 
-
-        echo json_encode($flowers, JSON_PRETTY_PRINT);
+        echo $flower;
         echo '<br><hr>';
         echo '<a href="view-flowers.php">Back</a>';
 

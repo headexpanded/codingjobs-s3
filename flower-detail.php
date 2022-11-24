@@ -1,10 +1,15 @@
 <?php
 // display details of a flower
-echo "A flower's details go here";
 
-require_once('FlowerManager.php');
-var_dump($_GET['id']);
-$flower = FlowerManager::find($_GET['id']);
+
+require_once('FlowerAPIManager.php');
+
+if (isset($_GET['id'])) $flower = FlowerManager::find($_GET['id']);
+
+if (isset($_GET['name'])) $flower = FlowerManager::findByName($_GET['name']);
+
+if (isset($_GET['column']) && isset($_GET['direction']))
+    $flower = FlowerManager::sortBy($_GET['column'], $_GET['direction']);
 
 ?>
 
@@ -19,9 +24,11 @@ $flower = FlowerManager::find($_GET['id']);
 </head>
 
 <body>
-    <p><?php $flower['name'] ?></p>;
-    <p><?php $flower['price'] ?></p>;
-    <a href="">Back</a>
+    <p><?= $flower->name ?></p>
+    <p><?= $flower->price ?></p>
+    <a href="./view-flowers.php">Back</a>
+    <br>
+    <a href="./json-flower.php?id=<?= $flower->id ?>">JSON</a>
 
 
     <div>
