@@ -23,7 +23,7 @@ require_once('FlowerAPIManager.php');
             $flower = FlowerManager::sortBy($_GET['column'], $_GET['direction']);
         else $flower = FlowerManager::findAll();
 
-        echo $flower;
+        print_r($flower);
         echo '<br><hr>';
         echo '<a href="view-flowers.php">Back</a>';
 

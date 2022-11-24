@@ -26,7 +26,7 @@ require_once('FlowerManager.php');
             $flowers = FlowerManager::sortBy($_GET['column'], $_GET['direction']);
 
 
-        // $flowers = FlowerManager::findAll();
+        $flowers = FlowerManager::findAll();
 
         foreach ($flowers as $flower) {
 
@@ -38,6 +38,7 @@ require_once('FlowerManager.php');
             echo "<hr>";
         }
         echo '<a href="./all-flowers.php">View JSON for all flowers</a><br>';
+        echo '<a href="./insert-flower.php">Add New Flower</a><br>';
 
         ?>
     </div>

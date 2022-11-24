@@ -1,6 +1,6 @@
 <?php
 require_once('flower.php');
-class FlowerManager
+class FlowerManager implements JsonSerializable
 {
 
     private static function get_pdo()
@@ -69,7 +69,7 @@ class FlowerManager
         $query = "SELECT * FROM flowers ORDER BY $column $direction";
         // prepare
         $prep = $pdo->prepare($query);
-        // bind
+        // bind - can't remove quotes from variables, no so binding possible without magic
         // $prep->bindValue(':column', $column);
         // $prep->bindValue(':direction', $direction);
         // execute
@@ -80,5 +80,28 @@ class FlowerManager
         // close conn
         $pdo = null;
         return $flowers;
+    }
+
+    public static function insertFlower($name, $price)
+    {
+        //open db conn
+        $pdo = self::get_pdo();
+        $query = "INSERT INTO flowers (flower_name, price) VALUES ('$name', '$price')";
+
+        $prep = $pdo->prepare($query);
+        // $prep->bindValue(':name', $name);
+        // $prep->bindValue(':price', $price);
+        // execute
+        $result = $pdo->query($query);
+        if ($result) self::jsonSerialize();
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'flowerName' => $this->name,
+            'price' => $this->price
+
+        ];
     }
 }

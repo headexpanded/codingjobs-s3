@@ -1,10 +1,12 @@
 <?php
 
+
+
 class Flower implements JsonSerializable
 {
     public $id;
     public $name;
-    private $price;
+    public $price;
 
     public function get_price()
     {
